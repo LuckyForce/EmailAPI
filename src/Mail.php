@@ -114,6 +114,10 @@ class Mail
             //echo 'Message has been sent';
             //Send the mail
             $mail->send();
+
+            //Return OK
+            http_response_code(200);
+            echo 'OK';
         } catch (Exception $e) {
             //echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
             http_response_code(500);

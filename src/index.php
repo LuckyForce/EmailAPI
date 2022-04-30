@@ -3,12 +3,13 @@
 //Date: 2022-04-29
 require_once '../vendor/autoload.php';
 
-include 'Mail.php';
+require_once 'Mail.php';
 
 use LuckyForce\EmailAPI\Mail;
 
 //Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    echo "Request method is POST.";
     //Create a new Post object
     $mail = new Mail();
     //Send the mail
