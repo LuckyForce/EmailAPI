@@ -16,5 +16,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mail->sendMail();
 }else{
     //If not redirect to get.php
-    echo require_once 'get.php';
+    echo "This API Service only accepts POST requests.";
 }
