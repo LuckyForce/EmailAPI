@@ -38,6 +38,12 @@ class Mail
                 $line = explode('=', $line);
                 $key = $line[0];
                 $value = $line[1];
+                //Get json encoded value
+                $tmp = json_encode($value);
+                //Cut of the last two characters of the value if there are any newlines
+                if (substr(substr($tmp, -3),0,2) == "\\n" || substr(substr($tmp, -3),0,2) == "\\r") {
+                    $value = substr($value, 0, -1);
+                }
                 $this->env[$key] = $value;
             }
 
@@ -70,22 +76,18 @@ class Mail
     public function sendMail()
     {
         try {
-            //Credentials
-
-            $username = "".mb_strcut(strval($this->env["MAIL_USERNAME"]), 0, strlen(strval($this->env["MAIL_USERNAME"])));
-            $password = "".mb_strcut(strval($this->env["MAIL_PASSWORD"]), 0, strlen(strval($this->env["MAIL_PASSWORD"])));
             //Server settings
             //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             //Create PHPMailer service
             $mail = new PHPMailer(true);
             //Debug on
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
             //Set the variables
             $mail->isSMTP();
             $mail->Host       = strval($this->env["MAIL_HOST"]);
             $mail->SMTPAuth   = true;
-            $mail->Username   = $username;
-            $mail->Password   = $password;
+            $mail->Username   = strval($this->env["MAIL_USERNAME"]);
+            $mail->Password   = strval($this->env["MAIL_PASSWORD"]);
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = intval($this->env["MAIL_PORT"]);
             $mail->CharSet   = 'UTF-8';
@@ -114,6 +116,8 @@ class Mail
             $mail->send();
         } catch (Exception $e) {
             //echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            http_response_code(500);
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
     }
 }
