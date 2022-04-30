@@ -1,0 +1,21 @@
+{
+    "name": "luckyforce/emailapi",
+    "description": "An Email API which will handle the Emails if I need them on more Projects.",
+    "type": "project",
+    "license": "GNU",
+    "autoload": {
+        "psr-4": {
+            "Luckyforce\\Emailapi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "LuckyForce",
+            "email": "adrian.schauer@aon.at"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "phpmailer/phpmailer": "dev-master"
+    }
+}
