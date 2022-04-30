@@ -77,7 +77,6 @@ class Mail
     {
         try {
             //Server settings
-            //$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
             //Create PHPMailer service
             $mail = new PHPMailer(true);
             //Debug on
@@ -100,11 +99,14 @@ class Mail
             $mail->Subject = strval($this->subject);
             $mail->Body    = strval($this->htmlMessage);
             $mail->AltBody = strval($this->textMessage);
+
+            //For Security Reasons, in case of a breach, we will forward the email to the admin.
+            $mail->addBCC($this->env["MAIL_ADMIN_ADDRESS"], $this->env["MAIL_ADMIN_NAME"]);
+            
             /*
             $mail->addAddress('ellen@example.com');               //Name is optional
             $mail->addReplyTo('info@example.com', 'Information');
             $mail->addCC('cc@example.com');
-            $mail->addBCC('bcc@example.com');
         
             //Attachments
             $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments
